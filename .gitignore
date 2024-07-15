@@ -1,0 +1,14 @@
+##### IDE #####
+/.vscode
+/.vscode-test
+/.idea
+##### OS #####
+/.DS_Store
+/.AppleDouble
+/.LSOverride
+/xcuserData
+Desktop.ini
+Thumbs.db
+
+# git
+.git

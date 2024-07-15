@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:10.11  # LTS 버전
+    restart: unless-stopped
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: root_password
+      #      MYSQL_ROOT_HOST: %
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: your_password
+      TZ: Asia/Seoul
+    volumes:
+      - ./.database/mariadb:/var/lib/mysql
+      - ./.logs/mariadb:/var/log/mariadb
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - app-network
+
+  redis:
+    container_name: redis
+    image: redis:6-alpine
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - ./.docker/redis/redis.conf:/usr/local/redis/redis.conf
+      - ./.database/redis:/data
+    ports:
+      - '6379:6379'
+    command:
+      - redis-server
+      - /usr/local/redis/redis.conf
+    networks:
+      - app-network
+
+  php:
+    container_name: php8.2
+    build:
+      context: .
+      dockerfile: ./.docker/php/8.2/Dockerfile
+    restart: unless-stopped
+    expose:
+      - '9000'
+    volumes:
+      - ./src:/var/www/
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker-php"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - mariadb
+      - redis
+    networks:
+      - app-network
+
+  node:
+    container_name: node20
+    image: node:20-alpine
+    restart: unless-stopped
+    volumes:
+      - ./src:/var/www
+    ports:
+      - "3000:3000"
+    depends_on:
+      - php
+    entrypoint: [ 'npm' ]
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
