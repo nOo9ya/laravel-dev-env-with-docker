@@ -87,7 +87,7 @@ B. 서버 구성:
 4. 이름을 'Docker-php'로 설정 (PHP_IDE_CONFIG의 serverName과 일치해야 함)
 5. Host를 'localhost'로 설정
 6. 'Use path mappings' 체크박스 선택
-7. 프로젝트 루트 디렉토리를 '/var/www/html'에 매핑
+7. 프로젝트 루트 디렉토리를 '/var/www/'에 매핑
 
 C. Run/Debug 구성:
 1. Run > Edit Configurations 메뉴 선택
