@@ -33,13 +33,21 @@ docker-compose build --no-cache
 
 ## Laravel 파일이 없을 시 접근 후 설치
 ```shell
-docker exec -it php /bin/sh
+docker exec -it php8.2 /bin/sh
 # laravel install 진행
 # ex) 원하는 버전으로 설치
 composer create-project laravel/laravel .(프로젝트명 .은 현재 경로에 그냥 설치) --prefer-dist 
 "9.*"
 # ex2) php 버전에 맞추어 최신 버전으로 설치
 composer create-project laravel/laravel .
+```
+
+## laravel 서버 실행
+```shell
+docker exec -it php8.2 /bin/sh
+
+# laravel serve option in docker
+php artisan serve --host=0.0.0.0 --port=80
 ```
 
 ## node 개발 소스 설치가 완료 되었다면 다시 실행
