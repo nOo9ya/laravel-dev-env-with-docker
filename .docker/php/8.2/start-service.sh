@@ -6,8 +6,10 @@ crond
 
 if [ -f "${WORK_DIR}/artisan" ]; then
 
-  unlink ${WORK_DIR}/public/storage
-  ln -s ${WORK_DIR}/storage/app/public/ ${WORK_DIR}/public/storage
+  if [ -f "${WORK_DIR}/public/storage" ]; then
+    unlink ${WORK_DIR}/public/storage
+    ln -s ${WORK_DIR}/storage/app/public/ ${WORK_DIR}/public/storage
+  fi
 
 #  if [ ! -d "${WORK_DIR}/public/storage" ]; then
 #    php artisan storage:link
@@ -51,10 +53,12 @@ if [ -f "${WORK_DIR}/artisan" ]; then
   echo "30      4       *       *       *       find /var/log/laravel/ -name '*.log' -mtime +30 -delete" >> /var/spool/cron/crontabs/root;
   echo "30      4       *       *       *       find /var/log/supervisor/ -name '*.log' -mtime +30 -delete" >> /var/spool/cron/crontabs/root;
   echo "=============================================================================================="
-  echo "============================= server php service container start ============================="
+  echo "============================= already server php service container ============================="
   echo "=============================================================================================="
 else
   echo "not found artisan file!!!!!!!"
   echo "You must have Laravel installed"
   tail -f /dev/null
 fi
+
+tail -f /dev/null
